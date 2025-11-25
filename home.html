@@ -1,271 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Admin Dashboard</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Home Store</title>
-    <!-- আইকনের জন্য FontAwesome -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background-color: #f5f5f5;
-            padding-bottom: 70px; /* নিচের বারের জন্য জায়গা */
-            padding-top: 70px; /* উপরের সার্চ বারের জন্য জায়গা */
-        }
-
-        /* --- Top Search Bar --- */
-        .top-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            padding: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            box-sizing: border-box;
-        }
-
-        .search-container {
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-        }
-
-        .search-container input {
-            width: 100%;
-            padding: 12px 40px 12px 20px;
-            border-radius: 25px;
-            border: 1px solid #ddd;
-            background: #f9f9f9;
-            font-size: 16px;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .search-container i {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-        }
-
-        /* --- App Grid --- */
-        .app-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
-            gap: 15px;
-            padding: 15px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .app-card {
-            background: white;
-            border-radius: 15px;
-            padding: 15px 10px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            cursor: pointer;
-        }
-
-        .app-card:active { transform: scale(0.95); }
-
-        .app-card img {
-            width: 70px;
-            height: 70px;
-            border-radius: 15px;
-            object-fit: cover;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .app-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .app-price {
-            font-size: 13px;
-            color: #27ae60;
-            font-weight: bold;
-        }
-        
-        .free { color: #2980b9; }
-
-        /* --- Bottom Navigation Bar --- */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            height: 60px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
-            z-index: 1000;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: #888;
-            font-size: 12px;
-            cursor: pointer;
-            flex: 1;
-        }
-
-        .nav-item i {
-            font-size: 20px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .nav-item.active {
-            color: #ff9800;
-        }
-
+        .menu-card { cursor: pointer; transition: transform 0.2s; height: 100%; text-decoration: none; color: inherit; }
+        .menu-card:hover { transform: scale(1.05); }
+        .icon-large { font-size: 3rem; margin-bottom: 10px; }
     </style>
 </head>
-<body>
+<body class="bg-light">
 
-    <!-- Top Search -->
-    <div class="top-bar">
-        <div class="search-container">
-            <input type="text" id="search-box" placeholder="Search apps & games...">
-            <i class="fas fa-search"></i>
+<nav class="navbar navbar-dark bg-dark px-3 mb-4">
+    <span class="navbar-brand">Admin Panel</span>
+    <button onclick="logout()" class="btn btn-danger btn-sm">Logout</button>
+</nav>
+
+<div class="container">
+    <h3 class="text-center mb-4">Welcome to Dashboard</h3>
+    <div class="row g-4">
+        <!-- Withdrawal Setup Button -->
+        <div class="col-md-6 col-lg-3">
+            <a href="settings.html" class="card p-4 text-center menu-card border-info">
+                <i class="fas fa-cogs icon-large text-info"></i>
+                <h5>App & Withdraw Setup</h5>
+            </a>
+        </div>
+        <!-- Task Setup Button -->
+        <div class="col-md-6 col-lg-3">
+            <a href="tasks.html" class="card p-4 text-center menu-card border-success">
+                <i class="fas fa-tasks icon-large text-success"></i>
+                <h5>Task Setup</h5>
+            </a>
+        </div>
+        <!-- Withdrawal Request Button -->
+        <div class="col-md-6 col-lg-3">
+            <a href="withdrawals.html" class="card p-4 text-center menu-card border-warning">
+                <i class="fas fa-money-bill-wave icon-large text-warning"></i>
+                <h5>Withdraw Requests</h5>
+            </a>
+        </div>
+        <!-- User Info Button -->
+        <div class="col-md-6 col-lg-3">
+            <a href="users.html" class="card p-4 text-center menu-card border-primary">
+                <i class="fas fa-users icon-large text-primary"></i>
+                <h5>All User Info</h5>
+            </a>
         </div>
     </div>
+</div>
 
-    <!-- Main Content Area -->
-    <div id="app-container" class="app-grid">
-        <p style="text-align:center; width:100%;">Loading...</p>
-    </div>
-
-    <!-- Bottom Navigation -->
-    <div class="bottom-nav">
-        <div class="nav-item active" onclick="filterCategory('all', this)">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </div>
-        <div class="nav-item" onclick="filterCategory('game', this)">
-            <i class="fas fa-gamepad"></i>
-            <span>Games</span>
-        </div>
-        <!-- Admin Panel Link (Optional/Hidden) -->
-        <div class="nav-item" onclick="window.location.href='developer/index.html'">
-            <i class="fas fa-user-cog"></i>
-            <span>Dev</span>
-        </div>
-    </div>
-
-    <script type="module">
-        import { db, ref, onValue } from './firebase-config.js';
-
-        const appContainer = document.getElementById('app-container');
-        const searchBox = document.getElementById('search-box');
-        let allApps = []; // সব অ্যাপ এখানে জমা থাকবে
-
-        // ১. Firebase থেকে সব অ্যাপ আনা
-        const appsRef = ref(db, 'apps');
-        onValue(appsRef, (snapshot) => {
-            appContainer.innerHTML = ""; // ক্লিয়ার করা
-            allApps = [];
-            const data = snapshot.val();
-            
-            if (data) {
-                Object.keys(data).forEach(key => {
-                    const app = data[key];
-                    app.id = key; // আইডি সেট করা
-                    allApps.push(app);
-                });
-                // সব অ্যাপ প্রথমে দেখাও
-                displayApps(allApps);
-            } else {
-                appContainer.innerHTML = "<p style='width:100%; text-align:center;'>No apps uploaded yet.</p>";
-            }
-        });
-
-        // ২. অ্যাপ দেখানোর ফাংশন (ডিসপ্লে)
-        function displayApps(appsToShow) {
-            appContainer.innerHTML = "";
-            if (appsToShow.length === 0) {
-                appContainer.innerHTML = "<p style='width:100%; text-align:center;'>No match found.</p>";
-                return;
-            }
-
-            appsToShow.forEach(app => {
-                const div = document.createElement('div');
-                div.className = 'app-card';
-                div.onclick = () => {
-                    // অ্যাপে ক্লিক করলে app.html এ যাবে আইডি সহ
-                    window.location.href = `app.html?id=${app.id}`;
-                };
-
-                const priceText = (app.price == 0 || !app.price) ? "FREE" : `৳${app.price}`;
-                const priceClass = (app.price == 0 || !app.price) ? "app-price free" : "app-price";
-
-                div.innerHTML = `
-                    <img src="${app.icon}" onerror="this.src='https://via.placeholder.com/70'" alt="Icon">
-                    <div class="app-title">${app.name}</div>
-                    <div class="${priceClass}">${priceText}</div>
-                `;
-                appContainer.appendChild(div);
-            });
-        }
-
-        // ৩. সার্চ করার লজিক
-        searchBox.addEventListener('input', (e) => {
-            const searchText = e.target.value.toLowerCase();
-            const filteredApps = allApps.filter(app => 
-                app.name.toLowerCase().includes(searchText)
-            );
-            displayApps(filteredApps);
-        });
-
-        // ৪. ক্যাটাগরি ফিল্টার (Home vs Game)
-        // যেহেতু ডাটাবেসে এখনও 'category' ফিল্ড আমরা যোগ করিনি, 
-        // তাই আপাতত 'Game' বাটনে ক্লিক করলে আমি কাল্পনিকভাবে ফিল্টার দেখাচ্ছি না, 
-        // ভবিষ্যতে অ্যাপ আপলোড করার সময় 'Category' সিলেক্ট করার অপশন দিতে হবে।
-        // আপাতত আমি সার্চ বক্স ক্লিয়ার করে সব দেখাচ্ছি।
-        
-        window.filterCategory = function(type, element) {
-            // বাটনের কালার চেঞ্জ
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-
-            if (type === 'all') {
-                displayApps(allApps);
-            } else if (type === 'game') {
-                // *নোট: অ্যাপ আপলোডের সময় category: 'game' সেভ করলে এখানে ফিল্টার করা যেত।
-                // আপাতত ডেমো হিসেবে সব অ্যাপই দেখাচ্ছে, অথবা আপনি চাইলে নাম দিয়ে ফিল্টার করতে পারেন।
-                const gamesOnly = allApps.filter(app => 
-                    app.name.toLowerCase().includes('game') || 
-                    (app.description && app.description.toLowerCase().includes('game'))
-                );
-                
-                if(gamesOnly.length > 0) {
-                    displayApps(gamesOnly);
-                } else {
-                    appContainer.innerHTML = "<p style='width:100%; text-align:center;'>No games found via name search.</p>";
-                }
-            }
-        };
-
-    </script>
+<script>
+    if(localStorage.getItem("admin_logged_in") !== "true") window.location.href = "login.html";
+    function logout() { localStorage.removeItem("admin_logged_in"); window.location.href = "login.html"; }
+</script>
 
 </body>
 </html>
