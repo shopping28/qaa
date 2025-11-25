@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Withdrawal Requests</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<nav class="navbar navbar-dark bg-dark px-3 mb-4">
+    <a href="dashboard.html" class="btn btn-outline-light btn-sm">⬅ Back to Home</a>
+    <span class="navbar-text text-white">Withdrawal Requests</span>
+</nav>
+
+<div class="container">
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Method</th>
+                        <th>Number</th>
+                        <th>Amount</th>
+                        <th>User UID</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="withdrawTable">
+                    <tr><td colspan="5" class="text-center">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js";
+    import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/9.0.0/firebase-database.js";
+    
+    const firebaseConfig = { apiKey: "AIzaSyA-6c8nN8TUj9V8km-NAVkjgoIeQ5m7_ms", authDomain: "art-732d1.firebaseapp.com", databaseURL: "https://art-732d1-default-rtdb.firebaseio.com", projectId: "art-732d1", storageBucket: "art-732d1.firebasestorage.app", messagingSenderId: "901862985233", appId: "1:901862985233:web:ddfd6b7c8a57c65ef0ebb0" };
+    
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    onValue(ref(db, 'withdrawals'), (snap) => {
+        const table = document.getElementById('withdrawTable');
+        table.innerHTML = "";
+        let found = false;
+        
+        snap.forEach(child => {
+            const data = child.val();
+            const key = child.key;
+            if(data.status === 'pending') {
+                found = true;
+                table.innerHTML += `
+                    <tr>
+                        <td>${data.method}</td>
+                        <td>${data.number}</td>
+                        <td class="fw-bold text-success">${data.amount}</td>
+                        <td><small>${data.uid}</small></td>
+                        <td>
+                            <button onclick="process('${key}','${data.uid}',${data.amount},'approved')" class="btn btn-success btn-sm">Pay</button>
+                            <button onclick="process('${key}','${data.uid}',${data.amount},'rejected')" class="btn btn-danger btn-sm">Reject</button>
+                        </td>
+                    </tr>`;
+            }
+        });
+        if(!found) table.innerHTML = `<tr><td colspan="5" class="text-center">No pending requests</td></tr>`;
+    });
+
+    window.process = (key, uid, amount, status) => {
+        if(!confirm("Are you sure?")) return;
+        
+        if(status === 'approved') {
+            update(ref(db, `withdrawals/${key}`), { status: 'approved' });
+        } else {
+            // Reject & Refund
+            get(ref(db, `users/${uid}`)).then(uSnap => {
+                const currentBal = uSnap.exists() ? (uSnap.val().balance || 0) : 0;
+                const newBal = currentBal + Number(amount);
+                
+                const updates = {};
+                updates[`withdrawals/${key}/status`] = 'rejected';
+                updates[`users/${uid}/balance`] = newBal;
+                
+                update(ref(db), updates).then(() => alert("Rejected & Refunded!"));
+            });
+        }
+    };
+</script>
+</body>
+</html>
